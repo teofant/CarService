@@ -2,9 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CS.Core.Abstract;
+using CS.Core.Abstract.Interfaces;
+using CS.Core.Context;
+using CS.Core.Services;
+using CS.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +31,27 @@ namespace CS.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //services.AddRazorPages();
+
+            services.AddDbContext<MainContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<MainContext>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<ICarBrandService, CarBrandService>();
+            services.AddTransient<ICarModelService, CarModelService>();
+            services.AddTransient<ICarOwnerService, CarOwnerService>();
+            services.AddTransient<IHistoryStatusService, HistoryStatusService>();
+            services.AddTransient<IMasterService, MasterService>();
+            services.AddTransient<IOwnerService, OwnerService>();
+            services.AddTransient<IOwnerRepairService, OwnerRepairService>();
+            services.AddTransient<IRepairService, RepairService>();
+            services.AddTransient<IRepairStatusService, RepairStatusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +72,7 @@ namespace CS.WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
