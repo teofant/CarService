@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CS.WebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -17,12 +19,24 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Car catalogs <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Car" asp-action="Index">Cars</a></li>
+                                <li><a asp-controller="CarBrand" asp-action="Index">Brands</a></li>
+                                <li><a asp-controller="CarModel" asp-action="Index">Models</a></li>
+                                <li><a asp-controller="CarOwner" asp-action="Index">Car Owner</a></li>
+                                <li><a asp-controller="Master" asp-action="Index">Masters</a></li>
+                                <li><a asp-controller="Owner" asp-action="Index">Owner</a></li>
+                                <li><a asp-controller="OwnerRepair" asp-action="Index">Owner Repair</a></li>
+                                <li><a asp-controller="Repair" asp-action="Index">Repair</a></li>
+                                <li><a asp-controller="RepairStatus" asp-action="Index">Repair Statuses</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -42,6 +56,8 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

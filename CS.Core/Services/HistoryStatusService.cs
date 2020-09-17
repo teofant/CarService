@@ -20,7 +20,10 @@ namespace CS.Core.Services
         {
             return await _historyStatusRepository.CreateAsync(historyStatus);
         }
-
+        public async Task<IEnumerable<HistoryStatus>> GetByRepairIdAsync(int id)
+        {
+            return await _historyStatusRepository.FindAsync(h => h.RepairId == id);
+        }
         public async Task<int> DeleteAsync(HistoryStatus historyStatus)
         {
             return await _historyStatusRepository.DeleteAsync(historyStatus);

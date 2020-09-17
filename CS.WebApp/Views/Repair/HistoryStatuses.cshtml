@@ -1,0 +1,47 @@
+﻿@model CS.WebApp.Models.RepairViewModels.HistoryStatusViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>HistoryStatus</h1>
+<h4>Current Repair Date:  @Model.Repair.Date.ToShortDateString() RepairStatus: @Model.Repair.RepairStatus.Name Сause: @Model.Repair.Сause Result: @Model.Repair.Result</h4>
+<p>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Id
+            </th>
+            <th>
+               Date
+            </th>
+            <th>
+               Result
+            </th>
+            <th>
+                RepairStatus
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.HistoryStatus)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+                <td>
+                    @item.RepairStatus.Name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

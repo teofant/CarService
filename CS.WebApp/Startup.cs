@@ -31,14 +31,14 @@ namespace CS.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddRazorPages();
+            services.AddRazorPages();
 
             services.AddDbContext<MainContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+                options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<MainContext>();
-
+             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
@@ -47,7 +47,7 @@ namespace CS.WebApp
             services.AddTransient<ICarModelService, CarModelService>();
             services.AddTransient<ICarOwnerService, CarOwnerService>();
             services.AddTransient<IHistoryStatusService, HistoryStatusService>();
-            services.AddTransient<IMasterService, MasterService>();
+            services.AddTransient<IMasterService, MasterService>(); 
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IOwnerRepairService, OwnerRepairService>();
             services.AddTransient<IRepairService, RepairService>();

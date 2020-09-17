@@ -10,7 +10,8 @@ namespace CS.Core.Entities
         public DateTime DateIssue { get; set; }
         public int Mileage { get; set; }
 
-        public virtual List<Owner> Owners { get; set; }
+        public int OwnerId { get; set; }
+        public virtual Owner Owner { get; set; }
 
         public int CarBrandId { get; set; }
         public virtual CarBrand CarBrand { get; set; }

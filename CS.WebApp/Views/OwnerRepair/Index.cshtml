@@ -1,0 +1,46 @@
+﻿@model IEnumerable<CS.Core.Entities.OwnerRepair>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+               Owner
+            </th>
+            <th>
+               Repair
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @item.Owner.LastName @item.Owner.FirstName.First(). @item.Owner.Patronymic.First()
+            </td>
+            <td>
+                @item.Repair.RepairStatus.Name @item.Repair.Result @item.Repair.Сause
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", item) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

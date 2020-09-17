@@ -9,6 +9,7 @@ namespace CS.Core.Services.Interfaces
     public interface IHistoryStatusService
     {
         Task<IEnumerable<HistoryStatus>> GetAllAsync();
+        Task<IEnumerable<HistoryStatus>> GetByRepairIdAsync(int id);
         Task<HistoryStatus> GetAsync(int id);
         Task<int> CreateAsync(HistoryStatus historyStatus);
         Task<int> UpdateAsync(HistoryStatus historyStatus);

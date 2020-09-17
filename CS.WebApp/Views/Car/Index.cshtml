@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CS.Core.Entities.Car>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Cars</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateIssue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mileage)
+            </th>            
+            <th>
+               Owner
+            </th>
+            <th>
+               CarBrand
+            </th>
+            <th>
+               CarModel
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @item.DateIssue.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mileage)
+            </td>
+            <td>
+               @item.Owner.LastName @item.Owner.FirstName.First(). @item.Owner.Patronymic.First()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarBrand.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarModel.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", item) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
