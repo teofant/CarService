@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using CS.Core.DTO.CarOwner;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class CarOwnerController : Controller
     {
         private readonly ICarOwnerService _carOwnerService;
@@ -35,8 +37,9 @@ namespace CS.WebApp.Controllers.Catalogs
                 return View("Error", ex);
             }
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await GetSelected();
             return View();
         }
 
@@ -52,8 +55,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         CarId = carOwnerCreateDTO.CarId,
                         OwnerId = carOwnerCreateDTO.OwnerId,
                     };
-                    var id = await _carOwnerService.CreateAsync(carOwner);
-                    if (id == -1)
+                    var result = await _carOwnerService.CreateAsync(carOwner);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error create");
@@ -93,8 +96,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         CarId = carOwnerUpdateDTO.CarId,
                         OwnerId = carOwnerUpdateDTO.OwnerId
                     };
-                    var id = await _carOwnerService.UpdateAsync(carOwner);
-                    if (id == -1)
+                    var result = await _carOwnerService.UpdateAsync(carOwner);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error update");

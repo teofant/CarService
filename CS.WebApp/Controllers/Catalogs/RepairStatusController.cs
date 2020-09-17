@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using CS.Core.DTO.RepairStatuses;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class RepairStatusController : Controller
     {
         private readonly IRepairStatusService _repairStatusService;
@@ -45,8 +47,8 @@ namespace CS.WebApp.Controllers.Catalogs
                 {
                     Name = repairStatusCreateDTO.Name
                 };
-                var id = await _repairStatusService.CreateAsync(repairStatus);
-                if (id == -1)
+                var result = await _repairStatusService.CreateAsync(repairStatus);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error create");
                     return View(repairStatusCreateDTO);
@@ -79,8 +81,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     Id = repairStatusUpdateDTO.Id,
                     Name = repairStatusUpdateDTO.Name
                 };
-                var id = await _repairStatusService.UpdateAsync(repairStatus);
-                if (id == -1)
+                var result = await _repairStatusService.UpdateAsync(repairStatus);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error update");
                     return View(repairStatusUpdateDTO);

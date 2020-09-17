@@ -5,23 +5,25 @@ using System.Threading.Tasks;
 using CS.Core.DTO.Owners;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class OwnerController : Controller
     {
-        private readonly IOwnerService _ownerasterService;
+        private readonly IOwnerService _ownerService;
 
-        public OwnerController(IOwnerService ownerasterService)
+        public OwnerController(IOwnerService ownerService)
         {
-            _ownerasterService = ownerasterService;
+            _ownerService = ownerService;
         }
         public async Task<IActionResult> Index()
         {
             try
             {
-                var model = await _ownerasterService.GetAllAsync();
+                var model = await _ownerService.GetAllAsync();
                 return View(model);
             }
             catch (Exception ex)
@@ -47,8 +49,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     LastName = ownerCreateDTO.LastName,
                     Patronymic = ownerCreateDTO.Patronymic
                 };
-                var id = await _ownerasterService.CreateAsync(owner);
-                if (id == -1)
+                var result = await _ownerService.CreateAsync(owner);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error create");
                     return View(ownerCreateDTO);
@@ -85,8 +87,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     FirstName = ownerUpdateDTO.FirstName,
                     Patronymic = ownerUpdateDTO.Patronymic
                 };
-                var id = await _ownerasterService.UpdateAsync(owner);
-                if (id == -1)
+                var result = await _ownerService.UpdateAsync(owner);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error update");
                     return View(ownerUpdateDTO);
@@ -102,9 +104,9 @@ namespace CS.WebApp.Controllers.Catalogs
         {
             try
             {
-                var owner = await _ownerasterService.GetAsync(id);
+                var owner = await _ownerService.GetAsync(id);
                 if (owner != null)
-                    await _ownerasterService.DeleteAsync(owner);
+                    await _ownerService.DeleteAsync(owner);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using CS.Core.DTO.OwnerRepairs;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class OwnerRepairController : Controller
     {
         private readonly IOwnerRepairService _ownerRepairService;
@@ -35,8 +37,9 @@ namespace CS.WebApp.Controllers.Catalogs
                 return View("Error", ex);
             }
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await GetSelected();
             return View();
         }
 
@@ -52,8 +55,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         OwnerId = ownerRepairCreateDTO.OwnerId,
                         RepairId = ownerRepairCreateDTO.RepairId,
                     };
-                    var id = await _ownerRepairService.CreateAsync(ownerRepair);
-                    if (id == -1)
+                    var result = await _ownerRepairService.CreateAsync(ownerRepair);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error create");
@@ -93,8 +96,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         RepairId = ownerRepairUpdateDTO.RepairId,
                         OwnerId = ownerRepairUpdateDTO.OwnerId
                     };
-                    var id = await _ownerRepairService.UpdateAsync(ownerRepair);
-                    if (id == -1)
+                    var result = await _ownerRepairService.UpdateAsync(ownerRepair);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error update");

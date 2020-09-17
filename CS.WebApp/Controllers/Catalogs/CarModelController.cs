@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using CS.Core.DTO.CarModels;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class CarModelController : Controller
     {
         private readonly ICarModelService _carModelService;
@@ -45,8 +47,8 @@ namespace CS.WebApp.Controllers.Catalogs
                 {
                     Name = carModelCreateDTO.Name
                 };
-                var id = await _carModelService.CreateAsync(carModel);
-                if (id == -1)
+                var result = await _carModelService.CreateAsync(carModel);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error create");
                     return View(carModelCreateDTO);
@@ -79,8 +81,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     Id = carModelUpdateDTO.Id,
                     Name = carModelUpdateDTO.Name
                 };
-                var id = await _carModelService.UpdateAsync(carModel);
-                if (id == -1)
+                var result = await _carModelService.UpdateAsync(carModel);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error update");
                     return View(carModelUpdateDTO);

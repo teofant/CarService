@@ -37,7 +37,7 @@ namespace CS.Core.Services
 
         public async Task<int> UpdateAsync(CarBrand carBrand)
         {
-            return await _carBrandRepository.CreateAsync(carBrand);
+            return await _carBrandRepository.UpdateAsync(carBrand);
         }
     }
 }

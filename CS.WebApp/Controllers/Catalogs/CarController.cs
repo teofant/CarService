@@ -60,8 +60,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         DateIssue = carCreateDTO.DateIssue,
                         Mileage = carCreateDTO.Mileage
                     };
-                    var id = await _carService.CreateAsync(car);
-                    if (id == -1)
+                    var result = await _carService.CreateAsync(car);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error create");
@@ -107,8 +107,8 @@ namespace CS.WebApp.Controllers.Catalogs
                         DateIssue = carUpdateDTO.DateIssue,
                         Mileage = carUpdateDTO.Mileage
                     };
-                    var id = await _carService.UpdateAsync(car);
-                    if (id == -1)
+                    var result = await _carService.UpdateAsync(car);
+                    if (result == -1)
                     {
                         await GetSelected();
                         ModelState.AddModelError("", "Error update");

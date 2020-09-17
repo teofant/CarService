@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using CS.Core.DTO.Masters;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class MasterController : Controller
     {
         private readonly IMasterService _masterService;
@@ -47,8 +49,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     LastName = masterCreateDTO.LastName,
                     Patronymic = masterCreateDTO.Patronymic
                 };
-                var id = await _masterService.CreateAsync(master);
-                if (id == -1)
+                var result = await _masterService.CreateAsync(master);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error create");
                     return View(masterCreateDTO);
@@ -85,8 +87,8 @@ namespace CS.WebApp.Controllers.Catalogs
                     FirstName = masterUpdateDTO.FirstName,
                     Patronymic = masterUpdateDTO.Patronymic
                 };
-                var id = await _masterService.UpdateAsync(master);
-                if (id == -1)
+                var result = await _masterService.UpdateAsync(master);
+                if (result == -1)
                 {
                     ModelState.AddModelError("", "Error update");
                     return View(masterUpdateDTO);

@@ -5,38 +5,51 @@ using System.Threading.Tasks;
 using CS.Core.DTO.CarBrands;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CS.WebApp.Controllers.Catalogs
+namespace CS.WebAPI.Controllers
 {
-    [Authorize]
-    public class CarBrandController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CarBrandController : ControllerBase
     {
         private readonly ICarBrandService _carBrandService;
-
         public CarBrandController(ICarBrandService carBrandService)
         {
             _carBrandService = carBrandService;
         }
-        public async Task<IActionResult> Index()
+
+        [HttpGet]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAll()
         {
             try
             {
                 var model = await _carBrandService.GetAllAsync();
-                return View(model);
+                return Ok(model);
             }
             catch (Exception ex)
             {
-                return View("Error", ex);
+                return BadRequest(ex.Message);
             }
         }
-        public IActionResult Create()
+        [HttpGet]
+        [Route("get-by-id")]
+        public async Task<IActionResult> GetById(int id)
         {
-            return View();
+            try
+            {
+                var model = await _carBrandService.GetAsync(id);
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
+        [Route("create")]
         public async Task<IActionResult> Create(CarBrandCreateDTO carBrandCreateDTO)
         {
             try
@@ -49,35 +62,25 @@ namespace CS.WebApp.Controllers.Catalogs
                     };
                     var result = await _carBrandService.CreateAsync(carBrand);
                     if (result == -1)
-                    {
-                        ModelState.AddModelError("", "Error create");
-                        return View(carBrandCreateDTO);
-                    }
-                    return RedirectToAction("Index");
+                        return BadRequest("Error create");
+                    return Ok(carBrand);
                 }
-                return View(carBrandCreateDTO);
+                return BadRequest(ModelState);
             }
             catch (Exception ex)
             {
-                return View("Error", ex);
+                return BadRequest(ex.Message);
             }
         }
-        public IActionResult Edit(CarBrand carBrand)
-        {
-            var model = new CarBrandUpdateDTO
-            {
-                Id = carBrand.Id,
-                Name = carBrand.Name
-            };
-            return View(model);
-        }
+
         [HttpPost]
+        [Route("update")]
         public async Task<IActionResult> Edit(CarBrandUpdateDTO carBrandUpdateDTO)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return View(carBrandUpdateDTO);
+                    return BadRequest(ModelState);
                 CarBrand carBrand = new CarBrand
                 {
                     Id = carBrandUpdateDTO.Id,
@@ -85,29 +88,32 @@ namespace CS.WebApp.Controllers.Catalogs
                 };
                 var result = await _carBrandService.UpdateAsync(carBrand);
                 if (result == -1)
-                {
-                    ModelState.AddModelError("", "Error update");
-                    return View(carBrandUpdateDTO);
-                }
-                return RedirectToAction("Index");
+                    return BadRequest("Error update");
+                return Ok(carBrand);
             }
             catch (Exception ex)
             {
-                return View("Error", ex);
+                return BadRequest(ex.Message);
             }
         }
+        [HttpPost]
+        [Route("delete")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 var carBrand = await _carBrandService.GetAsync(id);
                 if (carBrand != null)
-                    await _carBrandService.DeleteAsync(carBrand);
-                return RedirectToAction("Index");
+                {
+                    var result = await _carBrandService.DeleteAsync(carBrand);
+                    if (result == -1)
+                        return BadRequest("Error delete");
+                }
+                return Ok();
             }
             catch (Exception ex)
             {
-                return View("Error", ex);
+                return BadRequest(ex.Message);
             }
         }
     }

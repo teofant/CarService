@@ -6,11 +6,13 @@ using CS.Core.DTO.Repairs;
 using CS.Core.Entities;
 using CS.Core.Services.Interfaces;
 using CS.WebApp.Models.RepairViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CS.WebApp.Controllers.Catalogs
 {
+    [Authorize]
     public class RepairController : Controller
     {
         private readonly IRepairService _repairService;
@@ -54,8 +56,9 @@ namespace CS.WebApp.Controllers.Catalogs
                 return View("Error", ex);
             }
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await GetSelected();
             return View();
         }
 
